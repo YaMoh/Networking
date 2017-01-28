@@ -1,5 +1,6 @@
 //
 //  HttpRequestSpec.swift
+//  [PROJECT]
 //
 //  Created by Yaser on 2017-01-10.
 //  Copyright © 2017 Bespoke Code Ltd. All rights reserved.
@@ -8,7 +9,7 @@
 import XCTest
 import Foundation
 
-@testable import 
+@testable import Swappy
 
 class HttpRequestSpec: XCTestCase {
     
@@ -278,5 +279,31 @@ fileprivate class TestDelegate: HttpRequestableDelegate {
 }
 
 fileprivate class TestError: Error { }
+
+fileprivate class TestURLResponse: HTTPURLResponse {
+    var statusCodeToReturn: Int?
+    var headersToReturn: [String: Any]?
+    
+    init() {
+        let url = URL(fileURLWithPath: "blubb")
+        super.init(url: url, statusCode: 0, httpVersion: "2", headerFields: ["hej": "hej"])!
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override var statusCode: Int {
+        get {
+            return statusCodeToReturn ?? -1
+        }
+    }
+    
+    override var allHeaderFields: [AnyHashable : Any] {
+        get {
+            return headersToReturn ?? [:]
+        }
+    }
+}
 
 
